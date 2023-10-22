@@ -2,6 +2,7 @@ from django.db import models
 
 class Teacher(models.Model):
     fullname=models.CharField(max_length=100)
+    detail=models.TextField(null=True)
     email=models.CharField(max_length=100)
     password=models.CharField(max_length=100)
     qualification=models.CharField(max_length=100)
@@ -10,3 +11,7 @@ class Teacher(models.Model):
 
     def __str__(self) :
         return self.fullname
+    
+    def skill_list(self):
+        skill_list=self.skills.split(',')
+        return skill_list

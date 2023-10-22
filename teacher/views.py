@@ -42,7 +42,7 @@ def teacher_login(request):
 
 #specific teacher course
 
-class TeacherCourseList(generics.ListAPIView):
+class TeacherCourseList(generics.ListCreateAPIView):
     serializer_class=CourseSerializer
 
 
@@ -50,6 +50,15 @@ class TeacherCourseList(generics.ListAPIView):
         teacher_id=self.kwargs['teacher_id']
         teacher=models.Teacher.objects.get(pk=teacher_id)
         return Course.objects.filter(teacher=teacher)
+
+
+
+
+class TeacherCourseDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset= Course.objects.all()
+    serializer_class=CourseSerializer
+   
+
 
 
 

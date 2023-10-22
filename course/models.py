@@ -1,6 +1,7 @@
 from django.db import models
 from django.db import models
 from teacher.models import Teacher
+from django.core import serializers
 
 class CourseCategory(models.Model):
     title = models.CharField(max_length=100)
@@ -16,7 +17,7 @@ class CourseCategory(models.Model):
 
 class Course(models.Model):
     category = models.ForeignKey(CourseCategory, on_delete=models.CASCADE, related_name='courses')
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE,related_name='teacher_courses')
     title = models.CharField(max_length=100)
     description = models.TextField()
     featured_img=models.ImageField(upload_to='course_imgs/',null=True)
@@ -25,8 +26,17 @@ class Course(models.Model):
     def __str__(self):
         return self.title
     
+    def related_videos(self):
+        reated_videos=Course.objects.filter(techs__icontains=self.techs)
+        return serializers.serialize('json',reated_videos)
+    
+    def tech_list(self):
+        tech_list=self.techs.split(',')
+        return tech_list
+
+    
 class Chapter(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE,related_name='course_chapters')
     title = models.CharField(max_length=100)
     description = models.TextField()
     video=models.FileField(upload_to='chapter_videos/',null=True)
