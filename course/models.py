@@ -1,7 +1,8 @@
 from django.db import models
-from django.db import models
 from teacher.models import Teacher
 from django.core import serializers
+from enrollment.models import StudentCourseEnrollment
+
 
 class CourseCategory(models.Model):
     title = models.CharField(max_length=100)
@@ -33,6 +34,12 @@ class Course(models.Model):
     def tech_list(self):
         tech_list=self.techs.split(',')
         return tech_list
+    
+    def total_enrolled_students(self):
+        total_enrolled_students=StudentCourseEnrollment.objects.filter(course=self).count()
+        return total_enrolled_students
+    
+    
 
     
 class Chapter(models.Model):
