@@ -4,5 +4,11 @@ from .models import Teacher
 class TeacherSerializer(serializers.ModelSerializer):
     class Meta:
         model=Teacher
-        fields=['id','fullname','detail','email','password','qualification','mobile_no','skills','teacher_courses','skill_list']
-        depth=1
+        fields=['id','fullname','email','password','qualification','mobile_no','skills','profile_img','teacher_courses','skill_list']
+    
+    def __init__(self, *args,**kwargs):
+        super(TeacherSerializer,self).__init__(*args,**kwargs)
+        request=self.context.get('request')
+        self.Meta.depth=0
+        if request and request.method =='GET':
+            self.Meta.depth=1

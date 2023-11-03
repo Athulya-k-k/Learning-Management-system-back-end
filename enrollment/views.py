@@ -5,38 +5,35 @@ from .import models
 from .serializers import StudentCourseEnrollSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse,HttpResponse
-from course.models import Course 
+from course.models import Course
+from .models  import StudentCourseEnrollment
+from teacher.models import Teacher
 
-
-
-
-
-@csrf_exempt
 def fetch_enroll_status(request, student_id, course_id):
-    try:
-        student = Student.objects.get(pk=student_id)
-        course = Course.objects.get(pk=course_id)
-        
-        # Check if the enrollment already exists
-        enrollment, created = models.StudentCourseEnrollment.objects.get_or_create(student=student, course=course)
-        
-        if created:
-            return JsonResponse({'message': 'Enrollment successful.'})
+        student = Student.objects.filter(id=student_id).first()
+        course = Course.objects.filter(id=course_id).first()
+        enrollStatus=StudentCourseEnrollment.objects.filter(course=course,student=student).count()
+        if enrollStatus:
+              return JsonResponse({'bool':True})
         else:
-            return JsonResponse({'message': 'Student is already enrolled in this course.'})
-    except Student.DoesNotExist:
-        return JsonResponse({'error': 'Student not found.'})
-    except Course.DoesNotExist:
-        return JsonResponse({'error': 'Course not found.'})
+              return JsonResponse({'bool':False})
+
 
 class EnrolledstudentList(generics.ListAPIView):
     queryset=models.StudentCourseEnrollment.objects.all()
     serializer_class=StudentCourseEnrollSerializer
 
     def get_queryset(self):
-        course_id=self.kwargs['course_id']
-        course=Course.objects.get(pk=course_id)
-        return models.StudentCourseEnrollment.objects.filter(course=course)
+        if 'course_id' in self.kwargs:
+            course_id=self.kwargs['course_id']
+            course=Course.objects.get(pk=course_id)
+            return models.StudentCourseEnrollment.objects.filter(course=course)
+        
+        elif 'teacher_id' in self.kwargs:
+            teacher_id=self.kwargs['teacher_id']
+            teacher=Teacher.objects.get(pk=teacher_id)
+            return models.StudentCourseEnrollment.objects.filter(course__teacher=teacher).distinct()
+              
     
 
 class StudentEnrollCourseList(generics.ListCreateAPIView):
@@ -47,3 +44,7 @@ class StudentEnrollCourseList(generics.ListCreateAPIView):
 
 class Meta:     
         abstract = True
+
+
+
+ 

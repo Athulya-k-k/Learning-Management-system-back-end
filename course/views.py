@@ -5,6 +5,8 @@ from rest_framework import generics
 from .serializers import CategorySerializer
 from .serializers import CourseSerializer,ChapterSerializer
 from .models import Course,Chapter
+from django.http import JsonResponse,HttpResponse
+from student.models import Student
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -63,5 +65,6 @@ class ChapterDetailView(generics.RetrieveUpdateDestroyAPIView):
 class CourseDetailView(generics.RetrieveAPIView):
     queryset=models.Course.objects.all()
     serializer_class= CourseSerializer
+
 
 

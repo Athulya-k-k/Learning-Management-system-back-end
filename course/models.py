@@ -2,6 +2,7 @@ from django.db import models
 from teacher.models import Teacher
 from django.core import serializers
 from enrollment.models import StudentCourseEnrollment
+from rating.models import CourseRating
 
 
 class CourseCategory(models.Model):
@@ -39,6 +40,12 @@ class Course(models.Model):
         total_enrolled_students=StudentCourseEnrollment.objects.filter(course=self).count()
         return total_enrolled_students
     
+    # def course_rating(self):
+    #    course_rating=CourseRating.objects.filter(course=self).aaggregate(avg_rating=models.Avg('rating'))
+    #    return course_rating
+    
+    
+    
     
 
     
@@ -48,3 +55,5 @@ class Chapter(models.Model):
     description = models.TextField()
     video=models.FileField(upload_to='chapter_videos/',null=True)
     remarks= models.TextField(null=True)
+
+
