@@ -7,3 +7,6 @@ class StudentCourseEnrollment(models.Model):
 
     def __str__(self):
         return f"{self.course}-{self.student}"
+
+
+

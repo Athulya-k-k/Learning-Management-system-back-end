@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
-from .serializers import TeacherSerializer
+from .serializers import TeacherSerializer,TeacherDashboardSerializer
 from .models import Teacher
 from .import models
 from rest_framework.response import Response
@@ -76,5 +76,8 @@ def teacher_change_password(request,teacher_id):
                 return JsonResponse({'bool': False})
      
 
+class TeacherDashboard(generics.RetrieveAPIView):
+     queryset=models.Teacher.objects.all()
+     serializer_class=TeacherDashboardSerializer
 
         
