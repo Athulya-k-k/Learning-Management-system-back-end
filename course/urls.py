@@ -8,6 +8,7 @@ urlpatterns = [
     path('chapter/',views.ChapterList.as_view()),
     path('coursechapters/<int:course_id>',views.CourseChapterList.as_view()),
     path('chapter/<int:pk>',views.ChapterDetailView.as_view()),
+    path('fetch-recommended-courses/<int:studentId>/', views.CourseList.as_view()),
    
    
 ]

@@ -38,6 +38,7 @@ class EnrolledstudentList(generics.ListAPIView):
             student_id=self.kwargs['student_id']
             student=Student.objects.get(pk=student_id)
             return models.StudentCourseEnrollment.objects.filter(student=student).distinct()
+    
               
     
 

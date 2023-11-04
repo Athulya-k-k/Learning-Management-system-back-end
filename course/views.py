@@ -7,6 +7,7 @@ from .serializers import CourseSerializer,ChapterSerializer
 from .models import Course,Chapter
 from django.http import JsonResponse,HttpResponse
 from student.models import Student
+from django.db.models import Q 
 
 
 class CategoryList(generics.ListCreateAPIView):
@@ -34,6 +35,17 @@ class CourseList(generics.ListCreateAPIView):
             teacher=models.Teacher.objects.filter(id=teacher).first()
             qs=models.Course.objects.filter(techs__icontains=skill_name,teacher=teacher)
 
+                  
+        elif 'studentId' in self.kwargs:
+            student_id=self.kwargs['studentId']
+            student=Student.objects.get(pk=student_id)
+            print(student.interest)
+            queries=[Q(techs__iendswith=value) for value in student.interest]
+            query=queries.pop()
+            for item in queries:
+                 query |=item
+            qs=models.Course.objects.filter(query)
+            return qs
         
         return qs
   
