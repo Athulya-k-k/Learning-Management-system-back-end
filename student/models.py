@@ -1,5 +1,6 @@
 from django.db import models
 from course.models import Course
+from teacher.models import Teacher
 
 
 class Student(models.Model):
@@ -25,3 +26,15 @@ class StudentFavoriteCourse(models.Model):
 
     def __str__(self) :
         return f"{self.course}-{self.student}"
+    
+
+
+class StudentAssignment(models.Model):
+     teacher= models.ForeignKey(Teacher, on_delete=models.CASCADE, null=True, default=None)
+     student = models.ForeignKey('student.Student', on_delete=models.CASCADE, null=True, default=None)
+     title = models.CharField(max_length=250)
+     detail=models.TextField(null=True)
+     add_time=models.DateTimeField(auto_now_add=True)
+
+     def __str__(self):
+         return f"{self.title}"
