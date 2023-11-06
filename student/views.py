@@ -103,5 +103,7 @@ class StudentDashboard(generics.RetrieveAPIView):
 
 
 
-
+class StudentDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset=models.Student.objects.all()
+    serializer_class=StudentSerializer
     

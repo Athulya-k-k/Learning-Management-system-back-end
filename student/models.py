@@ -7,9 +7,10 @@ from enrollment.models import StudentCourseEnrollment
 class Student(models.Model):
     fullname=models.CharField( max_length=50)
     email=models.EmailField( max_length=254)
-    password=models.CharField( max_length=50)
+    password=models.CharField( max_length=50,null=True,blank=True)
     username=models.CharField( max_length=50)
     interest=models.TextField()
+    profile_img=models.ImageField(upload_to='student_profile_imgs/',null=True)
     
     def __str__(self) :
         return self.fullname
