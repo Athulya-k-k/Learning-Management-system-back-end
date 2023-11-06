@@ -8,6 +8,7 @@ from django.http import JsonResponse,HttpResponse
 from course.models import Course
 from rest_framework.response import Response
 from teacher.models import Teacher
+from notification.models import Notification
 
 
 class StudentList(generics.ListCreateAPIView):
@@ -86,6 +87,7 @@ class MyAssignmentList(generics.ListCreateAPIView):
     def get_queryset(self):
         student_id=self.kwargs['student_id']
         student=models.Student.objects.get(pk=student_id)
+        Notification.objects.filter(student=student,notify_for='student',notify_subject='assignment').update(notify_read_status=True)
         return models.StudentAssignment.objects.filter(student=student)
 
 

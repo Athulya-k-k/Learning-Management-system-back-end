@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "corsheaders", 
     'enrollment' ,
     'rating',
+    'notification',
+    'quiz',
     
 ]
 
