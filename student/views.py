@@ -6,6 +6,9 @@ from .serializers import StudentSerializer,StudentFavoriteCourseSerializer,Stude
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse,HttpResponse
 from course.models import Course
+from rest_framework.response import Response
+from teacher.models import Teacher
+
 
 class StudentList(generics.ListCreateAPIView):
     queryset=models.Student.objects.all()
@@ -71,7 +74,7 @@ class AssignmentList(generics.ListCreateAPIView):
         student_id=self.kwargs['student_id']
         teacher_id=self.kwargs['teacher_id']
         student=models.Student.objects.get(pk=student_id)
-        teacher=models.Teacher.objects.get(pk=teacher_id)
+        teacher=Teacher.objects.get(pk=teacher_id)
         return models.StudentAssignment.objects.filter(student=student,teacher=teacher)
 
 
@@ -87,7 +90,9 @@ class MyAssignmentList(generics.ListCreateAPIView):
 
 
 
-
+class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.StudentAssignment.objects.all()
+    serializer_class = StudentAssignmentSerializer
 
 
 
