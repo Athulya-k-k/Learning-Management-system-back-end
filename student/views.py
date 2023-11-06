@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics
 from .models import Student
 from .import models
-from .serializers import StudentSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer
+from .serializers import StudentSerializer,StudentFavoriteCourseSerializer,StudentAssignmentSerializer,StudentDashboardSerializer
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse,HttpResponse
 from course.models import Course
@@ -96,6 +96,9 @@ class UpdateAssignment(generics.RetrieveUpdateDestroyAPIView):
 
 
 
+class StudentDashboard(generics.RetrieveAPIView):
+     queryset=models.Student.objects.all()
+     serializer_class=StudentDashboardSerializer
 
 
 
