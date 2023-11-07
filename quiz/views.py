@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import QuizSerializer
+from .serializers import QuizSerializer,QuestionSerializer
 from rest_framework import generics
 from .models import Quiz
 from .import models
@@ -32,3 +32,11 @@ class TeacherQuizDetail(generics.RetrieveUpdateDestroyAPIView):
 class QuizDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset=models.Quiz.objects.all()
     serializer_class=QuizSerializer
+
+class QuizQuestion(generics.ListAPIView):
+    serializer_class=QuestionSerializer
+
+    def get_queryset(self):
+        quiz_id=self.kwargs['quiz_id']
+        quiz=models.Quiz.objects.get(pk=quiz_id)
+        return models.QuizQuestions.objects.filter(quiz=quiz)
