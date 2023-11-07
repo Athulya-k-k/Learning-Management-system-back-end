@@ -68,11 +68,11 @@ class ChapterDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset=models.Chapter.objects.all()
     serializer_class=ChapterSerializer
 
-    # def get_serializer_context(self):
-    #    context=super().get_serializer_context()
-    #    context['chapter_duration']=self.chapter_duration
-    #    print(context)
-    #    return context
+    def get_serializer_context(self):
+       context=super().get_serializer_context()
+       context['chapter_duration']=self.chapter_duration
+       print(context)
+       return context
   
 class CourseDetailView(generics.RetrieveAPIView):
     queryset=models.Course.objects.all()
